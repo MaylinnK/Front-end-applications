@@ -27,17 +27,3 @@ export const BerryProvider = ({ children }) => {
 };
 
 export default BerryContext;
-
-// export const BerryProvider = ({ children }) => {
-//   const [json, setJson] = useState(null);
-//   useEffect(() => {
-//     fetch("https://pokeapi.co/api/v2/berry/").then((BerryData) => BerryData.json())
-//     .then(data => {
-//       setJson(data)
-//     })
-//   }, []);
-
-//   return (
-//     <BerryContext.Provider value={json}>{children}</BerryContext.Provider>
-//   );
-// };

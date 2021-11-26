@@ -20,8 +20,6 @@ const Name = () => {
       ))}
     </>
   );
-
-  //  return <h1>"hey"</h1>
 };
 
 export default Name;
