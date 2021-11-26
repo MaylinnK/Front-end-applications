@@ -1,5 +1,13 @@
-const Menu = () => {
-    return <nav>Inhoud van usecontext</nav>
-}
+import Button from "./Button";
 
-export default Menu
+const Menu = () => {
+  return (
+    <>
+      <nav>
+        <Button />
+      </nav>
+    </>
+  );
+};
+
+export default Menu;
