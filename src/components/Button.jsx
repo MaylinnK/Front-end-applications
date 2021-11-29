@@ -3,7 +3,6 @@ import BerryContext from "../providers/BerryContext";
 
 const Name = () => {
   let data = useContext(BerryContext);
-  console.log(data);
   if (!data) {
     return <h1>"hey"</h1>;
   }
