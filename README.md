@@ -1,70 +1,30 @@
-# Getting Started with Create React App
+# :grapes:BerryDex
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Take proper care of your pokémon! Dont feed them berries they dont like.:x:
+Not many people know about this, but the pokémon that fight for you actually have a berry preference. Feeding the right berry to your pokémon can have additional effects for the pokémon, which will help you during combat.  
+Using the Berrydex, you can check what every berry tastes like so you know you're not putting you pokémon through hell trying to eat it.:sparkles:  
+This program uses the PokéAPI to receive berry data. It then loops through different links in order to gather details from the different berries. The purpose of this program is to create an interactive visualization of the berries in Pokémon where users can see the properties of each berry and know what effects they have.  
+<img src= "https://github.com/MaylinnK/Frontend-Data/blob/main/afbeeldingen/design3.PNG?raw=true" width="600">
 
-## Available Scripts
 
-In the project directory, you can run:
+## Assignment
+I wrote this program for a school assignment. This assignment was to write a program that parses a given dataset with D3 and React, while documenting the proces on GitHub.  
 
-### `npm start`
+## Installation
+1. Clone the repository.
+2. Install packages.
+3. Open live server with npm start.
+4. Gawk at berries in the BerryDex
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Documentation
+See [the wiki](https://github.com/MaylinnK/Frontend-Data/wiki) for documentation.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## To-do
+:clipboard: Add animations.  
+:clipboard: Make text data more readable.  
+:clipboard: Make radiobuttons more interactive.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## License
+Author: Maylinn Kwakman  
+License by MIT  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
