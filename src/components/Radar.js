@@ -4,10 +4,9 @@ import * as d3 from "d3";
 import { useContext } from "react";
 import BerryContext from "../providers/BerryContext";
 
-function BarChart({ id, options }) {
-    const d = useContext(BerryContext);
-    console.log("hey")
-    id = document.createElement('div');
+function RadarChart({ id, options, data }) {
+    data = useContext(BerryContext);
+    id = "#chart";
   const ref = useD3((svg) => {
     // Maakt een lijst van eigenschappen aan voor de chart om later gemakkelijk aanpassingen te maken.
     let cfg = {
@@ -46,9 +45,10 @@ function BarChart({ id, options }) {
       );
 
     // Maakt de vijfhoeken aan en positioneert ze in elkaar.
+    const lines = []
     for (let j = 0; j < cfg.levels; j++) {
       let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels);
-      g.selectAll(".levels")
+      lines.push(g.selectAll(".levels")
         .data(allAxis)
         .enter()
         .append("svg:line")
@@ -86,7 +86,8 @@ function BarChart({ id, options }) {
             ", " +
             (cfg.h / 2 - levelFactor) +
             ")"
-        );
+        )
+      )
     }
     let series = 0;
 
@@ -99,7 +100,7 @@ function BarChart({ id, options }) {
       .attr("className", "axis");
 
     //Maakt de axis lijnen aan.
-    axis
+    const axisses = axis
       .append("line")
       .attr("x1", cfg.w / 2)
       .attr("y1", cfg.h / 2)
@@ -118,7 +119,7 @@ function BarChart({ id, options }) {
       .style("stroke-width", "2px");
 
     // Voegt de labels toe aan de chart.
-    axis
+    const labels = axis
       .append("text")
       .attr("className", "legend")
       .text(function (d) {
@@ -148,15 +149,19 @@ function BarChart({ id, options }) {
         );
       });
 
+      if (!data) {
+        return <h1>Geen data in radar.js</h1>
+      }
+
     // Laadt alle data in de chart.
-    function loadData(berry, tooltip, dataValues, potencyData, z) {
+    function loadData(d, berry, tooltip, dataValues, potencyData, z) {
       // Delete huidige data in de chart.
       d3.selectAll(".poly").remove();
       // Haalt de id op van de geselecteerde radiobutton.
       berry = document.querySelector('input[type="radio"]:checked').id;
       dataValues = [];
       potencyData = [];
-      potencyData.push(d[berry].flavors);
+      potencyData.push(data[berry].flavors);
       // Loopt door de potencies heen en zet deze om naar coordinaten op de chart.
       potencyData.forEach(function (y, x) {
         g.selectAll(".nodes").data(y, (j, i) => {
@@ -176,7 +181,7 @@ function BarChart({ id, options }) {
       });
 
       // Gebruikt de coordinaten om de radar op de chart te zetten.
-      g.selectAll(".area")
+      const dataArea = g.selectAll(".area")
         .data([dataValues])
         .join(function (enter) {
           return (
@@ -218,9 +223,10 @@ function BarChart({ id, options }) {
       // Maakt cirkels aan per hoek om de potency te kunnen zien.
       tooltip = d3.select("body").append("div").attr("className", "toolTip");
       potencyData = [potencyData];
+      const cirkels = []
       // Haalt weer de potency data op en en zet deze om naar coordinaten.
       potencyData[0].forEach(function (y, x) {
-        g.selectAll(".nodes")
+        cirkels.push(g.selectAll(".nodes")
           .data(y)
           .enter()
           .append("svg:circle")
@@ -275,29 +281,52 @@ function BarChart({ id, options }) {
           })
           .on("mouseout", function (d) {
             tooltip.style("display", "none");
-          });
+          })
+        )
         series++;
       });
+      
+      // svg.select(".lines").call(lines);
+      // svg.select(".axisses").call(axisses);
+      // svg.select(".labels").call(labels);
+      // svg.select(".plot-area").call(dataArea);
     }
+    
 
-    // Laadt overige data in in de browser.
-    function textData(berry) {
-      berry = document.querySelector('input[type="radio"]:checked').id;
-      document.querySelector("h1").innerHTML = d[berry].name;
-      document.getElementById("firmness").innerHTML = d[berry].firmness.name;
-      document.getElementById("growth").innerHTML = d[berry].growth_time;
-      document.getElementById("harvest").innerHTML = d[berry].max_harvest;
-      document.getElementById("size").innerHTML = d[berry].size;
-      document.getElementById("smoothness").innerHTML = d[berry].smoothness;
-      document.getElementById("dryness").innerHTML = d[berry].soil_dryness;
-    }
+    // // Laadt overige data in de browser.
+    // function textData(berry) {
+    //   berry = document.querySelector('input[type="radio"]:checked').id;
+    //   document.querySelector("h1").innerHTML = d[berry].name;
+    //   document.getElementById("firmness").innerHTML = d[berry].firmness.name;
+    //   document.getElementById("growth").innerHTML = d[berry].growth_time;
+    //   document.getElementById("harvest").innerHTML = d[berry].max_harvest;
+    //   document.getElementById("size").innerHTML = d[berry].size;
+    //   document.getElementById("smoothness").innerHTML = d[berry].smoothness;
+    //   document.getElementById("dryness").innerHTML = d[berry].soil_dryness;
+    // }
     // Voegt event listeners toe aan de radiobuttons.
     const buttons = document.querySelectorAll("input");
     for (const button of buttons) {
       button.addEventListener("click", loadData);
-      button.addEventListener("click", textData);
+      // button.addEventListener("click", textData);
     }
   });
+  return (
+    <svg
+      ref={ref}
+      style={{
+        height: 500,
+        width: "100%",
+        marginRight: "0px",
+        marginLeft: "0px"
+      }}
+    >
+      <g className="plot-area" />
+      <g className="lines" />
+      <g className="axisses" />
+      <g className="labels" />
+    </svg>
+  );
 }
 
-export default BarChart;
+export default RadarChart;

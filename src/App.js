@@ -174,7 +174,7 @@ export default function App() {
               </p>
             </article>
           </section>
-          {/* <RadarChart /> */}
+          <RadarChart />
           <div id="chart"></div>
         </main>
       </div>
