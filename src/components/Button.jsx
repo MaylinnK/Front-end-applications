@@ -4,7 +4,7 @@ import BerryContext from "../providers/BerryContext";
 const Name = () => {
   let data = useContext(BerryContext);
   if (!data) {
-    return <h1>Geen data in Button.jsx!</h1>;
+    return <h1>Loading...</h1>;
   }
   return (
     <>

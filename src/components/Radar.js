@@ -1,12 +1,11 @@
 import useD3 from "../hooks/useD3";
-// import React from "react";
 import * as d3 from "d3";
 import { useContext } from "react";
 import BerryContext from "../providers/BerryContext";
 
 function RadarChart({ id, options, data }) {
-    data = useContext(BerryContext);
-    id = "#chart";
+  data = useContext(BerryContext);
+  id = "#chart";
   const ref = useD3((svg) => {
     // Maakt een lijst van eigenschappen aan voor de chart om later gemakkelijk aanpassingen te maken.
     let cfg = {
@@ -31,11 +30,9 @@ function RadarChart({ id, options, data }) {
     const allAxis = ["spicy", "dry", "sweet", "bitter", "sour"];
     let total = allAxis.length;
     let radius = cfg.factor * Math.min(cfg.w / 2, cfg.h / 2);
-    d3.select(id).select("svg").remove();
 
-    let g = d3
-      .select(id)
-      .append("svg")
+    let g = svg
+      // .select()
       .attr("width", cfg.w + cfg.ExtraWidthX)
       .attr("height", cfg.h + cfg.ExtraWidthY)
       .append("g")
@@ -45,49 +42,53 @@ function RadarChart({ id, options, data }) {
       );
 
     // Maakt de vijfhoeken aan en positioneert ze in elkaar.
-    const lines = []
+    const lines = [];
     for (let j = 0; j < cfg.levels; j++) {
       let levelFactor = cfg.factor * radius * ((j + 1) / cfg.levels);
-      lines.push(g.selectAll(".levels")
-        .data(allAxis)
-        .enter()
-        .append("svg:line")
-        // maakt 1 voor 1 de lijnen van de zeshoeken aan.
-        .attr("x1", function (d, i) {
-          return (
-            levelFactor * (1 - cfg.factor * Math.sin((i * cfg.radians) / total))
-          );
-        })
-        .attr("y1", function (d, i) {
-          return (
-            levelFactor * (1 - cfg.factor * Math.cos((i * cfg.radians) / total))
-          );
-        })
-        .attr("x2", function (d, i) {
-          return (
-            levelFactor *
-            (1 - cfg.factor * Math.sin(((i + 1) * cfg.radians) / total))
-          );
-        })
-        .attr("y2", function (d, i) {
-          return (
-            levelFactor *
-            (1 - cfg.factor * Math.cos(((i + 1) * cfg.radians) / total))
-          );
-        })
-        .attr("className", "line")
-        .style("stroke", "#5f8e0c")
-        .style("stroke-opacity", "0.7")
-        .style("stroke-width", "1.5px")
-        .attr(
-          "transform",
-          "translate(" +
-            (cfg.w / 2 - levelFactor) +
-            ", " +
-            (cfg.h / 2 - levelFactor) +
-            ")"
-        )
-      )
+      lines.push(
+        g
+          .selectAll(".levels")
+          .data(allAxis)
+          .enter()
+          .append("svg:line")
+          // maakt 1 voor 1 de lijnen van de zeshoeken aan.
+          .attr("x1", function (d, i) {
+            return (
+              levelFactor *
+              (1 - cfg.factor * Math.sin((i * cfg.radians) / total))
+            );
+          })
+          .attr("y1", function (d, i) {
+            return (
+              levelFactor *
+              (1 - cfg.factor * Math.cos((i * cfg.radians) / total))
+            );
+          })
+          .attr("x2", function (d, i) {
+            return (
+              levelFactor *
+              (1 - cfg.factor * Math.sin(((i + 1) * cfg.radians) / total))
+            );
+          })
+          .attr("y2", function (d, i) {
+            return (
+              levelFactor *
+              (1 - cfg.factor * Math.cos(((i + 1) * cfg.radians) / total))
+            );
+          })
+          .attr("class", "line")
+          .style("stroke", "#5f8e0c")
+          .style("stroke-opacity", "0.7")
+          .style("stroke-width", "1.5px")
+          .attr(
+            "transform",
+            "translate(" +
+              (cfg.w / 2 - levelFactor) +
+              ", " +
+              (cfg.h / 2 - levelFactor) +
+              ")"
+          )
+      );
     }
     let series = 0;
 
@@ -97,7 +98,7 @@ function RadarChart({ id, options, data }) {
       .data(allAxis)
       .enter()
       .append("g")
-      .attr("className", "axis");
+      .attr("class", "axis");
 
     //Maakt de axis lijnen aan.
     const axisses = axis
@@ -114,14 +115,14 @@ function RadarChart({ id, options, data }) {
           (cfg.h / 2) * (1 - cfg.factor * Math.cos((i * cfg.radians) / total))
         );
       })
-      .attr("className", "line")
+      .attr("class", "line")
       .style("stroke", "#5f8e0c")
       .style("stroke-width", "2px");
 
     // Voegt de labels toe aan de chart.
     const labels = axis
       .append("text")
-      .attr("className", "legend")
+      .attr("class", "legend")
       .text(function (d) {
         return d;
       })
@@ -149,14 +150,14 @@ function RadarChart({ id, options, data }) {
         );
       });
 
-      if (!data) {
-        return <h1>Geen data in radar.js</h1>
-      }
+    if (!data) {
+      return <h1>Geen data in radar.js</h1>;
+    }
 
     // Laadt alle data in de chart.
     function loadData(d, berry, tooltip, dataValues, potencyData, z) {
       // Delete huidige data in de chart.
-      d3.selectAll(".poly").remove();
+      svg.selectAll(".poly").remove();
       // Haalt de id op van de geselecteerde radiobutton.
       berry = document.querySelector('input[type="radio"]:checked').id;
       dataValues = [];
@@ -181,13 +182,14 @@ function RadarChart({ id, options, data }) {
       });
 
       // Gebruikt de coordinaten om de radar op de chart te zetten.
-      const dataArea = g.selectAll(".area")
+      const dataArea = g
+        .selectAll(".area")
         .data([dataValues])
         .join(function (enter) {
           return (
             enter
               .append("polygon")
-              .attr("className", "radar-chart-serie" + series + " poly")
+              .attr("class", "radar-chart-serie" + series + " poly")
               .style("stroke-width", "1.5px")
               .style("stroke", cfg.color(series))
               .attr("points", function (d) {
@@ -204,7 +206,7 @@ function RadarChart({ id, options, data }) {
 
               // Animatie als je over de radar hovert.
               .on("mouseover", function (d) {
-                z = "polygon." + d3.select(this).attr("className");
+                z = "polygon." + d3.select(this).attr("class");
                 g.selectAll("polygon")
                   .transition(200)
                   .style("fill-opacity", 0.1);
@@ -221,77 +223,73 @@ function RadarChart({ id, options, data }) {
       series = 0;
 
       // Maakt cirkels aan per hoek om de potency te kunnen zien.
-      tooltip = d3.select("body").append("div").attr("className", "toolTip");
+      tooltip = d3.select("body").append("div").attr("class", "toolTip");
       potencyData = [potencyData];
-      const cirkels = []
+      const cirkels = [];
       // Haalt weer de potency data op en en zet deze om naar coordinaten.
       potencyData[0].forEach(function (y, x) {
-        cirkels.push(g.selectAll(".nodes")
-          .data(y)
-          .enter()
-          .append("svg:circle")
-          .attr("className", "radar-chart-serie" + series + " poly")
-          .attr("r", cfg.radius)
-          .attr("alt", function (j) {
-            return Math.max(j.value, 0);
-          })
-          .attr("cx", function (j, i) {
-            dataValues.push([
-              (cfg.w / 2) *
+        cirkels.push(
+          g
+            .selectAll(".nodes")
+            .data(y)
+            .enter()
+            .append("svg:circle")
+            .attr("class", "radar-chart-serie" + series + " poly")
+            .attr("r", cfg.radius)
+            .attr("alt", function (j) {
+              return Math.max(j.value, 0);
+            })
+            .attr("cx", function (j, i) {
+              dataValues.push([
+                (cfg.w / 2) *
+                  (1 -
+                    (parseFloat(Math.max(j.potency + 5, 0)) / cfg.maxValue) *
+                      cfg.factor *
+                      Math.sin((i * cfg.radians) / total)),
+                (cfg.h / 2) *
+                  (1 -
+                    (parseFloat(Math.max(j.potency + 5, 0)) / cfg.maxValue) *
+                      cfg.factor *
+                      Math.cos((i * cfg.radians) / total)),
+              ]);
+              return (
+                (cfg.w / 2) *
                 (1 -
-                  (parseFloat(Math.max(j.potency + 5, 0)) / cfg.maxValue) *
+                  (Math.max(j.potency + 5, 0) / cfg.maxValue) *
                     cfg.factor *
-                    Math.sin((i * cfg.radians) / total)),
-              (cfg.h / 2) *
+                    Math.sin((i * cfg.radians) / total))
+              );
+            })
+            .attr("cy", function (j, i) {
+              return (
+                (cfg.h / 2) *
                 (1 -
-                  (parseFloat(Math.max(j.potency + 5, 0)) / cfg.maxValue) *
+                  (Math.max(j.potency + 5, 0) / cfg.maxValue) *
                     cfg.factor *
-                    Math.cos((i * cfg.radians) / total)),
-            ]);
-            return (
-              (cfg.w / 2) *
-              (1 -
-                (Math.max(j.potency + 5, 0) / cfg.maxValue) *
-                  cfg.factor *
-                  Math.sin((i * cfg.radians) / total))
-            );
-          })
-          .attr("cy", function (j, i) {
-            return (
-              (cfg.h / 2) *
-              (1 -
-                (Math.max(j.potency + 5, 0) / cfg.maxValue) *
-                  cfg.factor *
-                  Math.cos((i * cfg.radians) / total))
-            );
-          })
-          .style("fill", "#fff")
-          .style("stroke-width", "1px")
-          .style("stroke", cfg.color(series))
-          .style("fill-opacity", 0)
+                    Math.cos((i * cfg.radians) / total))
+              );
+            })
+            .style("fill", "#fff")
+            .style("stroke-width", "1px")
+            .style("stroke", cfg.color(series))
+            .style("fill-opacity", 0)
 
-          // Hover reactie om de tooltip te kunnen zien.
-          .on("mouseover", function (event, j) {
-            tooltip
-              .style("left", event.pageX - 40 + "px")
-              .style("top", event.pageY - 80 + "px")
-              .style("display", "inline-block")
-              .html("Potency" + "<br><span>" + j.potency + "</span>");
-            g.style("fill-opacity", 1);
-          })
-          .on("mouseout", function (d) {
-            tooltip.style("display", "none");
-          })
-        )
+            // Hover reactie om de tooltip te kunnen zien.
+            .on("mouseover", function (event, j) {
+              tooltip
+                .style("left", event.pageX - 40 + "px")
+                .style("top", event.pageY - 80 + "px")
+                .style("display", "inline-block")
+                .html("Potency" + "<br><span>" + j.potency + "</span>");
+              g.style("fill-opacity", 1);
+            })
+            .on("mouseout", function (d) {
+              tooltip.style("display", "none");
+            })
+        );
         series++;
       });
-      
-      // svg.select(".lines").call(lines);
-      // svg.select(".axisses").call(axisses);
-      // svg.select(".labels").call(labels);
-      // svg.select(".plot-area").call(dataArea);
     }
-    
 
     // // Laadt overige data in de browser.
     // function textData(berry) {
@@ -312,20 +310,16 @@ function RadarChart({ id, options, data }) {
     }
   });
   return (
-    <svg
-      ref={ref}
-      style={{
-        height: 500,
-        width: "100%",
-        marginRight: "0px",
-        marginLeft: "0px"
-      }}
-    >
-      <g className="plot-area" />
-      <g className="lines" />
-      <g className="axisses" />
-      <g className="labels" />
-    </svg>
+    <div id="chart">
+      <svg
+        ref={ref}
+      >
+        <g className="plot-area" />
+        <g className="lines" />
+        <g className="axisses" />
+        <g className="labels" />
+      </svg>
+    </div>
   );
 }
 
